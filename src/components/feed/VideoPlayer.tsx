@@ -4,11 +4,12 @@ import { PressableHaptics } from '@/components/ui/PressableHaptics';
 import { useAuthStore } from '@/utils/authStore';
 import { getTimer } from '@/utils/ui';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { BottomTabBarHeightContext } from '@react-navigation/bottom-tabs';
 import { useEventListener } from 'expo';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
 import { useVideoPlayer, VideoView } from 'expo-video';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import {
     Dimensions,
     GestureResponderEvent,
@@ -32,7 +33,6 @@ export default function VideoPlayer({
     onShare,
     onBookmark,
     onOther,
-    bottomInset,
     commentsOpen,
     screenFocused,
     videoPlaybackRates,
@@ -40,9 +40,10 @@ export default function VideoPlayer({
     otherOpen,
     navigation,
     onNavigate,
-    tabBarHeight = 60,
     onTimelineControlled
 }) {
+    const tabBarHeight = useContext(BottomTabBarHeightContext) || 60
+
     const [isLiked, setIsLiked] = useState(item.has_liked);
     const [isBookmarked, setIsBookmarked] = useState(item.has_bookmarked);
     const [showControls, setShowControls] = useState(false);
@@ -325,7 +326,7 @@ export default function VideoPlayer({
 
             {!showDurationControl && (
                 <>
-                    <View style={[styles.rightActions, { bottom: bottomInset + tabBarHeight + 20 + PROGRESS_BAR_HEIGHT }]}>
+                    <View style={[styles.rightActions, { bottom: tabBarHeight + 20 + PROGRESS_BAR_HEIGHT }]}>
                         <PressableHaptics
                             style={styles.actionButton}
                             onPress={() => router.push(`/private/profile/${item.account.id}`)}>
@@ -369,7 +370,7 @@ export default function VideoPlayer({
                         </TouchableOpacity>
                     </View>
 
-                    <View style={[styles.bottomInfo, { bottom: bottomInset + tabBarHeight + 10 + PROGRESS_BAR_HEIGHT * 2 }]}>
+                    <View style={[styles.bottomInfo, { bottom: tabBarHeight + 10 + PROGRESS_BAR_HEIGHT * 2 }]}>
                         <TouchableOpacity
                             onPress={() => {
                                 onNavigate?.();
@@ -420,13 +421,13 @@ export default function VideoPlayer({
             )}
 
             {showDurationControl && (
-                <View style={[styles.durationControlOverlay, { bottom: bottomInset + tabBarHeight + 10 + PROGRESS_BAR_HEIGHT * 2 + 60 }]}>
+                <View style={[styles.durationControlOverlay, { bottom: tabBarHeight + 10 + PROGRESS_BAR_HEIGHT * 2 + 60 }]}>
                     <Text style={styles.durationControlText}>{elapsedTime} / {totalTime}</Text>
                 </View>
             )}
 
             <View style={[styles.timelineSection, {
-                bottom: bottomInset + tabBarHeight + (showDurationControl ? 0 : 10) + 10,
+                bottom: tabBarHeight + (showDurationControl ? 0 : 10) + 10,
                 height: PROGRESS_BAR_HEIGHT + (showDurationControl ? PROGRESS_BAR_HEIGHT : 0),
             }]} onTouchStart={OnTimelineTouchStart} onTouchMove={onTimelineTouchMove} onTouchEnd={OnTimelineTouchEnd}>
                 <View style={[styles.timelineController, {

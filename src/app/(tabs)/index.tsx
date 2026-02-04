@@ -33,7 +33,6 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get('window');
-const TAB_BAR_HEIGHT = 60;
 
 const fetchVideos = async ({ pageParam = null, tab }) => {
     if (tab === 'local') {
@@ -142,8 +141,8 @@ export default function LoopsFeed({ navigation }) {
                 return await videoUnlike(data.id);
             }
         },
-        onSuccess: (res) => {},
-        onError: (error) => {},
+        onSuccess: (res) => { },
+        onError: (error) => { },
     });
 
     const videoBookmarkMutation = useMutation({
@@ -157,8 +156,8 @@ export default function LoopsFeed({ navigation }) {
                 return await videoUnbookmark(data.id);
             }
         },
-        onSuccess: (res) => {},
-        onError: (error) => {},
+        onSuccess: (res) => { },
+        onError: (error) => { },
     });
 
     const videos = data?.pages?.flatMap((page) => page.data) || [];
@@ -285,7 +284,6 @@ export default function LoopsFeed({ navigation }) {
                     videoPlaybackRates={videoPlaybackRates}
                     navigation={navigation}
                     onNavigate={handleNavigate}
-                    tabBarHeight={TAB_BAR_HEIGHT}
                     onTimelineControlled={setTimelineIsControlled}
                 />
             );

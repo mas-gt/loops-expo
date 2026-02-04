@@ -165,7 +165,6 @@ export default function ProfileFeed({navigation}) {
             onShare={handleShare}
             onOther={handleOther}
             onBookmark={handleBookmark}
-            bottomInset={insets.bottom}
             commentsOpen={showComments && selectedVideo?.id === item.id}
             shareOpen={showShare && selectedVideo?.id === item.id}
             otherOpen={showOther && selectedVideo?.id === item.id}
@@ -174,7 +173,6 @@ export default function ProfileFeed({navigation}) {
             navigation={navigation}
             onNavigate={handleNavigate}
             onTimelineControlled={setTimelineIsControlled}
-            tabBarHeight={0}
         />
     ), [currentIndex, insets.bottom, showComments, showShare, showOther, selectedVideo, screenFocused, videoPlaybackRates, navigation]);
 

@@ -2,7 +2,6 @@ import CommentsModal from '@/components/feed/CommentsModal';
 import OtherModal from '@/components/feed/OtherModal';
 import ShareModal from '@/components/feed/ShareModal';
 import VideoPlayer from '@/components/feed/VideoPlayer';
-import { useAuthStore } from '@/utils/authStore';
 import { fetchUserVideoCursor, videoBookmark, videoLike, videoUnbookmark, videoUnlike } from '@/utils/requests';
 import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
@@ -22,7 +21,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get('window');
 
-export default function ProfileFeed({navigation}) {
+export default function ProfileFeed({ navigation }) {
     const params = useLocalSearchParams();
     const profileId = params.profileId;
     const id = params.id;
@@ -36,7 +35,6 @@ export default function ProfileFeed({navigation}) {
     const [showOther, setShowOther] = useState(false);
     const [videoPlaybackRates, setVideoPlaybackRates] = useState({});
     const [screenFocused, setScreenFocused] = useState(true);
-    const muteOnOpen = useAuthStore((state) => state.muteOnOpen)
     const flatListRef = useRef(null);
     const router = useRouter();
     const [timelineIsControlled, setTimelineIsControlled] = useState<boolean>(false);
@@ -62,9 +60,9 @@ export default function ProfileFeed({navigation}) {
         isLoading,
     } = useInfiniteQuery({
         queryKey: ['profileVideoFeed', profileId, id],
-        queryFn: ({ pageParam }) => fetchUserVideoCursor({ 
+        queryFn: ({ pageParam }) => fetchUserVideoCursor({
             queryKey: ['profileVideoFeed', profileId, id],
-            pageParam 
+            pageParam
         }),
         getNextPageParam: (lastPage) => lastPage.meta?.next_cursor,
         initialPageParam: null,
@@ -138,7 +136,7 @@ export default function ProfileFeed({navigation}) {
         setSelectedVideo(video);
         setShowOther(true);
     };
-    
+
 
     const handlePlaybackSpeedChange = (speed) => {
         if (selectedVideo) {
@@ -172,7 +170,7 @@ export default function ProfileFeed({navigation}) {
             videoPlaybackRates={videoPlaybackRates}
             navigation={navigation}
             onNavigate={handleNavigate}
-            onTimelineControlled={setTimelineIsControlled}
+            onTimelineControlledChanged={setTimelineIsControlled}
         />
     ), [currentIndex, insets.bottom, showComments, showShare, showOther, selectedVideo, screenFocused, videoPlaybackRates, navigation]);
 
@@ -191,7 +189,7 @@ export default function ProfileFeed({navigation}) {
     if (isLoading) {
         return (
             <View style={styles.loadingContainer}>
-                <Stack.Screen options={{headerShown: false}} />
+                <Stack.Screen options={{ headerShown: false }} />
                 <ActivityIndicator size="large" color="#fff" />
             </View>
         );
@@ -201,7 +199,7 @@ export default function ProfileFeed({navigation}) {
         <View style={styles.container}>
             <StatusBar style="auto" />
 
-            <Stack.Screen options={{headerShown: false}} />
+            <Stack.Screen options={{ headerShown: false }} />
 
             <View style={[styles.header, { top: insets.top + 10 }]}>
                 <View style={styles.tabContainer}>

@@ -284,7 +284,7 @@ export default function LoopsFeed({ navigation }) {
                     videoPlaybackRates={videoPlaybackRates}
                     navigation={navigation}
                     onNavigate={handleNavigate}
-                    onTimelineControlled={setTimelineIsControlled}
+                    onTimelineControlledChanged={setTimelineIsControlled}
                 />
             );
         },
